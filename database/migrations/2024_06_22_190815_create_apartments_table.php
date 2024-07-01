@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('apartments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('building_id')->constrained();
-            $table->string('number');
-            $table->foreignId('reaction_id')->constrained('reactions', 'reaction_number');
-            $table->timestamp('reaction_time');
+            $table->string('number')->nullable();
+            $table->foreignId('reaction_id')->nullable()->constrained('reactions', 'reaction_number');
+            $table->timestamp('reaction_time')->nullable();
             $table->timestamps();
         });
     }

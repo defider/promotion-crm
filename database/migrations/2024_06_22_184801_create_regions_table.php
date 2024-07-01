@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('regions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('region_number')->unique();
-            $table->string('title');
+            $table->string('title')->unique();
             $table->timestamps();
         });
     }
