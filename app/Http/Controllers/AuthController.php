@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UserRegisterRequest;
 use App\Models\User;
+// use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Validation\Rules\Password;
+// use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -18,17 +21,11 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-    public function register()
+    public function register(UserRegisterRequest $request)
     {
-        $attributes = request()->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name'  => ['required', 'string', 'max:255'],
-            'phone'  => ['required', 'string', 'max:16', 'unique:users'],
-            'email'      => ['required', 'email', 'unique:users'],
-            'password'   => ['required', Password::defaults()]
-        ]);
+        $credentials = $request->validated();
 
-        $user = User::create($attributes);
+        User::create($credentials);
 
         return response()->json(['message' => 'Successfully registered'], 201);
     }
@@ -38,12 +35,9 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(UserLoginRequest $request)
     {
-        $credentials = request()->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required']
-        ]);
+        $credentials = $request->validated();
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
