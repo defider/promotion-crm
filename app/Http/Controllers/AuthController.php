@@ -5,23 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Models\User;
-// use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-// use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
     /**
-     * Create a new AuthController instance.
+     * Register the User.
      *
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
-
-    public function register(UserRegisterRequest $request)
+    public function register(UserRegisterRequest $request): \Illuminate\Http\JsonResponse
     {
         $credentials = $request->validated();
 
@@ -35,7 +28,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(UserLoginRequest $request)
+    public function login(UserLoginRequest $request): \Illuminate\Http\JsonResponse
     {
         $credentials = $request->validated();
 
@@ -51,7 +44,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
+    public function logout(): \Illuminate\Http\JsonResponse
     {
         auth()->logout();
 
@@ -63,7 +56,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function user()
+    public function user(): \Illuminate\Http\JsonResponse
     {
         return response()->json(auth('api')->user());
     }
@@ -73,7 +66,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
+    public function refresh(): \Illuminate\Http\JsonResponse
     {
         return $this->respondWithToken(auth()->refresh());
     }
@@ -81,11 +74,11 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param  string $token
+     * @param string $token
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken(string $token): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'access_token' => $token,
