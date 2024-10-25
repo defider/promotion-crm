@@ -14,8 +14,6 @@ class RegionController extends Controller
     public function index(): \Illuminate\Database\Eloquent\Collection
     {
         return Region::all();
-
-        //return response()->json(['message' => 'regions list']);
     }
 
     /**

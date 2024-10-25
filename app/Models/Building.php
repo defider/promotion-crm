@@ -9,6 +9,20 @@ class Building extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'region_id',
+        'postcode',
+        'district',
+        'locality',
+        'street',
+        'building_number',
+    ];
+
     public function apartments()
     {
         return $this->hasMany(Apartment::class);

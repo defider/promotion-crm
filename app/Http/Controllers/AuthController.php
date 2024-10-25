@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserLoginRequest;
-use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Routing\Controller;
 
@@ -14,7 +14,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(UserRegisterRequest $request): \Illuminate\Http\JsonResponse
+    public function register(RegisterUserRequest $request): \Illuminate\Http\JsonResponse
     {
         $credentials = $request->validated();
 
@@ -28,7 +28,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(UserLoginRequest $request): \Illuminate\Http\JsonResponse
+    public function login(LoginUserRequest $request): \Illuminate\Http\JsonResponse
     {
         $credentials = $request->validated();
 
