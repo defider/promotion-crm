@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\RegionController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,3 +16,4 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth', 'controller' => AuthCon
 
 Route::apiResource('regions', RegionController::class);
 Route::apiResource('buildings', BuildingController::class);
+Route::apiResource('reactions', ReactionController::class);
