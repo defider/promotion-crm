@@ -9,6 +9,18 @@ class Apartment extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'building_id',
+        'number',
+        'reaction_id',
+        'reaction_time',
+    ];
+
     public function building()
     {
         return $this->belongsTo(Building::class);

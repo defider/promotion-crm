@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\ReactionController;
@@ -17,3 +18,4 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth', 'controller' => AuthCon
 Route::apiResource('regions', RegionController::class);
 Route::apiResource('buildings', BuildingController::class);
 Route::apiResource('reactions', ReactionController::class);
+Route::apiResource('apartments', ApartmentController::class);
