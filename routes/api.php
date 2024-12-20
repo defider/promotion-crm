@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\LeafletController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\RegionController;
 use Illuminate\Support\Facades\Route;
@@ -19,3 +20,4 @@ Route::apiResource('regions', RegionController::class);
 Route::apiResource('buildings', BuildingController::class);
 Route::apiResource('reactions', ReactionController::class);
 Route::apiResource('apartments', ApartmentController::class);
+Route::apiResource('leaflets', LeafletController::class);
