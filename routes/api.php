@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\DistributionController;
 use App\Http\Controllers\LeafletController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\RegionController;
@@ -16,8 +17,13 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth', 'controller' => AuthCon
     Route::post('refresh', 'refresh');
 });
 
-Route::apiResource('regions', RegionController::class);
-Route::apiResource('buildings', BuildingController::class);
-Route::apiResource('reactions', ReactionController::class);
-Route::apiResource('apartments', ApartmentController::class);
-Route::apiResource('leaflets', LeafletController::class);
+Route::apiResources([
+    'regions' => RegionController::class,
+    'buildings' => BuildingController::class,
+    'reactions' => ReactionController::class,
+    'apartments' => ApartmentController::class,
+    'leaflets' => LeafletController::class,
+]);
+
+Route::patch('distributions/{id}/end', [DistributionController::class, 'end'])->name('distributions.end');
+Route::apiResource('distributions', DistributionController::class);

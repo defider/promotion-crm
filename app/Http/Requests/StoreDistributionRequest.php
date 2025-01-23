@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateBuildingRequest extends FormRequest
+class StoreDistributionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,9 @@ class UpdateBuildingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'region_id' => ['exists:regions,region_number'],
-            'postcode' => ['string', 'max:6'],
-            'district' => ['string', 'max:255'],
-            'locality' => ['string', 'max:255'],
-            'street' => ['string', 'max:255'],
-            'building_number' => ['string', 'max:255'],
+            'user_id' => ['required', 'exists:users,id'],
+            'building_id' => ['required', 'exists:buildings,id'],
+            'leaflet_id' => ['required', 'exists:leaflets,id'],
         ];
     }
 }
