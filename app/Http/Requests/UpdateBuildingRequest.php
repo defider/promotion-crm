@@ -22,12 +22,12 @@ class UpdateBuildingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'region_id' => ['exists:regions,region_number'],
+            'region_id' => ['exists:regions,code'],
             'postcode' => ['string', 'max:6'],
             'district' => ['string', 'max:255'],
             'locality' => ['string', 'max:255'],
             'street' => ['string', 'max:255'],
-            'building_number' => ['string', 'max:255'],
+            'number' => ['string', 'max:255'],
         ];
     }
 }

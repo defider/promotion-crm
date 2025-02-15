@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('buildings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('region_id')->constrained('regions', 'region_number');
+            $table->foreignId('region_id')->constrained('regions', 'code');
             $table->string('postcode', 6);
             $table->string('district')->nullable();
             $table->string('locality');
             $table->string('street')->nullable();
-            $table->string('building_number')->nullable();
+            $table->string('number')->nullable();
             $table->timestamps();
         });
     }

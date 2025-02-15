@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreReactionRequest;
 use App\Http\Requests\UpdateReactionRequest;
 use App\Models\Reaction;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 
 class ReactionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Illuminate\Database\Eloquent\Collection
+    public function index(): Collection
     {
         return Reaction::all();
     }
@@ -45,7 +47,7 @@ class ReactionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reaction $reaction): \Illuminate\Http\JsonResponse
+    public function destroy(Reaction $reaction): JsonResponse
     {
         $reaction->delete();
 

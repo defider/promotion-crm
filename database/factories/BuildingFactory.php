@@ -18,11 +18,11 @@ class BuildingFactory extends Factory
     public function definition(): array
     {
         return [
-            'region_id' => Region::all()->random()->region_number,
+            'region_id' => Region::all()->random()->code,
             'postcode' => fake()->postcode(),
             'locality' => fake()->cityPrefix().' '.fake()->city(),
             'street' => fake()->streetPrefix().' '.fake()->street(),
-            'building_number' => fake()->buildingNumber(),
+            'number' => fake()->buildingNumber(),
         ];
     }
 }

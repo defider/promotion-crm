@@ -15,12 +15,12 @@ class ReactionFactory extends Factory
      * @return array<string, mixed>
      */
 
-    private static int $reaction_number = 1;
+    private static int $number = 1;
 
     public function definition(): array
     {
         return [
-            'reaction_number' => self::$reaction_number++,
+            'number' => self::$number++,
         ];
     }
 }

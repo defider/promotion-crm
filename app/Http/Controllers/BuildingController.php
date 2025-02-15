@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBuildingRequest;
 use App\Http\Requests\UpdateBuildingRequest;
 use App\Models\Building;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 
 class BuildingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Illuminate\Database\Eloquent\Collection
+    public function index(): Collection
     {
         return Building::all();
     }
@@ -45,7 +47,7 @@ class BuildingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Building $building): \Illuminate\Http\JsonResponse
+    public function destroy(Building $building): JsonResponse
     {
         $building->delete();
 

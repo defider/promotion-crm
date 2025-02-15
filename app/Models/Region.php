@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Region extends Model
 {
@@ -15,12 +16,12 @@ class Region extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'region_number',
+        'code',
         'title',
     ];
 
-    public function buildings()
+    public function buildings(): HasMany
     {
-        return $this->hasMany(Building::class, 'region_id', 'region_number');
+        return $this->hasMany(Building::class, 'region_id', 'code');
     }
 }

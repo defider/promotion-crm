@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Reaction extends Model
 {
@@ -15,12 +16,12 @@ class Reaction extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'reaction_number',
+        'number',
         'title',
     ];
 
-    public function apartment()
+    public function apartment(): HasOne
     {
-        return $this->hasOne(Reaction::class, 'reaction_id', 'reaction_number');
+        return $this->hasOne(Reaction::class, 'reaction_id', 'number');
     }
 }

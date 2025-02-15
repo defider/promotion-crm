@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLeafletRequest;
 use App\Http\Requests\UpdateLeafletRequest;
 use App\Models\Leaflet;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 
 class LeafletController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Illuminate\Database\Eloquent\Collection
+    public function index(): Collection
     {
         return Leaflet::all();
     }
@@ -45,7 +47,7 @@ class LeafletController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Leaflet $leaflet): \Illuminate\Http\JsonResponse
+    public function destroy(Leaflet $leaflet): JsonResponse
     {
         $leaflet->delete();
 

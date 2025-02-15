@@ -22,7 +22,7 @@ class UpdateReactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'reaction_number' => ['string', 'max:2', 'unique:reactions'],
+            'number' => ['string', 'max:2', 'unique:reactions'],
             'title' => ['string', 'max:255', 'unique:reactions'],
         ];
     }

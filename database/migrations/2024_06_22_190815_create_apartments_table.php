@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('building_id')->constrained();
             $table->string('number')->default('Нет квартиры');
-            $table->foreignId('reaction_id')->nullable()->constrained('reactions', 'reaction_number');
+            $table->foreignId('reaction_id')->nullable()->constrained('reactions', 'number');
             $table->timestamp('reaction_time')->nullable();
             $table->timestamps();
         });

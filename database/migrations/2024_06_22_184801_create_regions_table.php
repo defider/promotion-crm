@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('regions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('region_number')->unique();
+            $table->unsignedBigInteger('code')->unique();
             $table->string('title')->unique();
             $table->timestamps();
         });

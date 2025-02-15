@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreApartmentRequest;
 use App\Http\Requests\UpdateApartmentRequest;
 use App\Models\Apartment;
+use Illuminate\Http\JsonResponse;
 
 class ApartmentController extends Controller
 {
@@ -45,7 +46,7 @@ class ApartmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Apartment $apartment): \Illuminate\Http\JsonResponse
+    public function destroy(Apartment $apartment): JsonResponse
     {
         $apartment->delete();
 

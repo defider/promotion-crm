@@ -15,12 +15,12 @@ class RegionFactory extends Factory
      * @return array<string, mixed>
      */
 
-    private static int $region_number = 1;
+    private static int $code = 1;
 
     public function definition(): array
     {
         return [
-            'region_number' => self::$region_number++,
+            'code' => self::$code++,
             'title' => fake()->unique()->region().' '.fake()->regionSuffix(),
         ];
     }

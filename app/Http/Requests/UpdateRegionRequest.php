@@ -22,7 +22,7 @@ class UpdateRegionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'region_number' => ['string', 'max:3', 'unique:regions'],
+            'code' => ['string', 'max:3', 'unique:regions'],
             'title' => ['string', 'max:255', 'unique:regions'],
         ];
     }

@@ -24,7 +24,7 @@ class StoreApartmentRequest extends FormRequest
         return [
             'building_id' => ['required', 'exists:buildings,id'],
             'number' => ['string', 'max:255'],
-            'reaction_id' => ['exists:reactions,reaction_number'],
+            'reaction_id' => ['exists:reactions,number'],
         ];
     }
 }

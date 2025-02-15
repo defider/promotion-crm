@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
 class AuthController extends Controller
@@ -12,9 +13,9 @@ class AuthController extends Controller
     /**
      * Register the User.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function register(RegisterUserRequest $request): \Illuminate\Http\JsonResponse
+    public function register(RegisterUserRequest $request): JsonResponse
     {
         $credentials = $request->validated();
 
@@ -26,9 +27,9 @@ class AuthController extends Controller
     /**
      * Get a JWT via given credentials.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function login(LoginUserRequest $request): \Illuminate\Http\JsonResponse
+    public function login(LoginUserRequest $request): JsonResponse
     {
         $credentials = $request->validated();
 
@@ -42,9 +43,9 @@ class AuthController extends Controller
     /**
      * Log the user out (Invalidate the token).
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function logout(): \Illuminate\Http\JsonResponse
+    public function logout(): JsonResponse
     {
         auth()->logout();
 
@@ -54,9 +55,9 @@ class AuthController extends Controller
     /**
      * Get the authenticated User.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function user(): \Illuminate\Http\JsonResponse
+    public function user(): JsonResponse
     {
         return response()->json(auth('api')->user());
     }
@@ -64,9 +65,9 @@ class AuthController extends Controller
     /**
      * Refresh a token.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function refresh(): \Illuminate\Http\JsonResponse
+    public function refresh(): JsonResponse
     {
         return $this->respondWithToken(auth()->refresh());
     }
@@ -76,9 +77,9 @@ class AuthController extends Controller
      *
      * @param string $token
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    protected function respondWithToken(string $token): \Illuminate\Http\JsonResponse
+    protected function respondWithToken(string $token): JsonResponse
     {
         return response()->json([
             'access_token' => $token,

@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDistributionRequest;
 use App\Http\Requests\UpdateDistributionRequest;
 use App\Models\Distribution;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 
 class DistributionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Illuminate\Database\Eloquent\Collection
+    public function index(): Collection
     {
         return Distribution::all();
     }
@@ -19,7 +21,7 @@ class DistributionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDistributionRequest $request): \Illuminate\Http\JsonResponse
+    public function store(StoreDistributionRequest $request): JsonResponse
     {
         Distribution::create($request->all());
 
@@ -47,14 +49,14 @@ class DistributionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Distribution $distribution): \Illuminate\Http\JsonResponse
+    public function destroy(Distribution $distribution): JsonResponse
     {
         $distribution->delete();
 
         return response()->json(['message' => 'Distribution has been removed']);
     }
 
-    public function end($id): \Illuminate\Http\JsonResponse
+    public function end($id): JsonResponse
     {
         $distribution = Distribution::findOrFail($id);
 

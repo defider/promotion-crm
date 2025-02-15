@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Building extends Model
 {
@@ -20,21 +22,21 @@ class Building extends Model
         'district',
         'locality',
         'street',
-        'building_number',
+        'number',
     ];
 
-    public function apartments()
+    public function apartments(): HasMany
     {
         return $this->hasMany(Apartment::class);
     }
 
-    public function distributions()
+    public function distributions(): HasMany
     {
         return $this->hasMany(Distribution::class);
     }
 
-    public function region()
+    public function region(): BelongsTo
     {
-        return $this->belongsTo(Region::class, 'region_id', 'region_number');
+        return $this->belongsTo(Region::class, 'region_id', 'code');
     }
 }
