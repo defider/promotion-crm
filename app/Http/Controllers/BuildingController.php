@@ -4,18 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBuildingRequest;
 use App\Http\Requests\UpdateBuildingRequest;
+use App\Http\Resources\BuildingResource;
 use App\Models\Building;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class BuildingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): Collection
+    public function index(): AnonymousResourceCollection
     {
-        return Building::all();
+        return BuildingResource::collection(Building::with('region')->paginate());
     }
 
     /**
@@ -23,25 +24,25 @@ class BuildingController extends Controller
      */
     public function store(StoreBuildingRequest $request)
     {
-        return Building::create($request->all());
+        return new BuildingResource(Building::create($request->all()));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Building $building): Building
+    public function show(Building $building): BuildingResource
     {
-        return $building;
+        return new BuildingResource($building);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBuildingRequest $request, Building $building): Building
+    public function update(UpdateBuildingRequest $request, Building $building): BuildingResource
     {
         $building->update($request->all());
 
-        return $building;
+        return new BuildingResource($building);
     }
 
     /**
