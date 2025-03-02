@@ -22,7 +22,7 @@ class BuildingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBuildingRequest $request)
+    public function store(StoreBuildingRequest $request): BuildingResource
     {
         return new BuildingResource(Building::create($request->all()));
     }

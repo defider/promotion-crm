@@ -4,43 +4,45 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreApartmentRequest;
 use App\Http\Requests\UpdateApartmentRequest;
+use App\Http\Resources\ApartmentResource;
 use App\Models\Apartment;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ApartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Illuminate\Database\Eloquent\Collection
+    public function index(): AnonymousResourceCollection
     {
-        return Apartment::all();
+        return ApartmentResource::collection(Apartment::with('reaction')->paginate());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreApartmentRequest $request)
+    public function store(StoreApartmentRequest $request): ApartmentResource
     {
-        return Apartment::create($request->all());
+        return new ApartmentResource(Apartment::create($request->all()));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Apartment $apartment): Apartment
+    public function show(Apartment $apartment): ApartmentResource
     {
-        return $apartment;
+        return new ApartmentResource($apartment);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateApartmentRequest $request, Apartment $apartment): Apartment
+    public function update(UpdateApartmentRequest $request, Apartment $apartment): ApartmentResource
     {
         $apartment->update($request->all());
 
-        return $apartment;
+        return new ApartmentResource($apartment);
     }
 
     /**
