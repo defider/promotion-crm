@@ -26,8 +26,18 @@ class Apartment extends Model
      */
     protected static function booted(): void
     {
+        static::creating(function (Apartment $apartment) {
+            if ($apartment->reaction_id == null || 1) {
+                $apartment->reaction_time = null;
+            } else {
+                $apartment->reaction_time = now();
+            }
+        });
+
         static::updating(function (Apartment $apartment) {
-            if ($apartment->isDirty('reaction_id')) {
+            if ($apartment->reaction_id == 1) {
+                $apartment->reaction_time = null;
+            } else {
                 $apartment->reaction_time = now();
             }
         });

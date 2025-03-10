@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BuildingResource extends JsonResource
+class LeafletResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,9 @@ class BuildingResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'region' => $this->region->title,
-            'postcode' => $this->postcode,
-            'district' => $this->district,
-            'locality' => $this->locality,
-            'street' => $this->street,
-            'number' => $this->number,
+            'title' => $this->title,
+            'description' => $this->description,
+            'image' => $this->image,
         ];
     }
 }

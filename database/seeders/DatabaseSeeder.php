@@ -39,8 +39,9 @@ class DatabaseSeeder extends Seeder
 
         Building::factory(20)->create();
 
-        Reaction::factory(5)
+        Reaction::factory(6)
             ->sequence(
+                ['title' => '-'],
                 ['title' => 'Не открыли дверь'],
                 ['title' => 'Проявили агрессию'],
                 ['title' => 'Не взяли листовку'],

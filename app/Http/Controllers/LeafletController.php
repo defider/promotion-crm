@@ -4,44 +4,45 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLeafletRequest;
 use App\Http\Requests\UpdateLeafletRequest;
+use App\Http\Resources\LeafletResource;
 use App\Models\Leaflet;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class LeafletController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): Collection
+    public function index(): AnonymousResourceCollection
     {
-        return Leaflet::all();
+        return LeafletResource::collection(Leaflet::paginate());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLeafletRequest $request)
+    public function store(StoreLeafletRequest $request): LeafletResource
     {
-        return Leaflet::create($request->all());
+        return new LeafletResource(Leaflet::create($request->all()));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Leaflet $leaflet): Leaflet
+    public function show(Leaflet $leaflet): LeafletResource
     {
-        return $leaflet;
+        return new LeafletResource($leaflet);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLeafletRequest $request, Leaflet $leaflet): Leaflet
+    public function update(UpdateLeafletRequest $request, Leaflet $leaflet): LeafletResource
     {
         $leaflet->update($request->all());
 
-        return $leaflet;
+        return new LeafletResource($leaflet);
     }
 
     /**
