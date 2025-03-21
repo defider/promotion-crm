@@ -17,13 +17,15 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth', 'controller' => AuthCon
     Route::post('refresh', 'refresh');
 });
 
-Route::apiResources([
-    'regions' => RegionController::class,
-    'buildings' => BuildingController::class,
-    'reactions' => ReactionController::class,
-    'apartments' => ApartmentController::class,
-    'leaflets' => LeafletController::class,
-]);
+Route::middleware(['throttle:api', 'auth:api'])->group(function () {
+    Route::apiResources([
+        'regions' => RegionController::class,
+        'buildings' => BuildingController::class,
+        'reactions' => ReactionController::class,
+        'apartments' => ApartmentController::class,
+        'leaflets' => LeafletController::class,
+    ]);
+});
 
-Route::patch('distributions/{id}/end', [DistributionController::class, 'end'])->name('distributions.end');
-Route::apiResource('distributions', DistributionController::class);
+Route::patch('distributions/{id}/end', [DistributionController::class, 'end'])->middleware(['throttle:api', 'auth:api'])->name('distributions.end');
+Route::apiResource('distributions', DistributionController::class)->middleware(['throttle:api', 'auth:api']);
