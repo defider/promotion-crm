@@ -9,7 +9,7 @@ use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\RegionController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => 'api', 'prefix' => 'auth', 'controller' => AuthController::class], function () {
+Route::prefix('auth')->middleware(['throttle:api', 'api'])->controller(AuthController::class)->group(function () {
     Route::post('register', 'register')->withoutMiddleware('auth:api');
     Route::post('login', 'login')->withoutMiddleware('auth:api');
     Route::post('logout', 'logout');
