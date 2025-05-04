@@ -9,12 +9,15 @@ use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\RegionController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('auth')->middleware(['throttle:api', 'api'])->controller(AuthController::class)->group(function () {
+Route::prefix('auth')->middleware(['throttle:api'])->controller(AuthController::class)->group(function () {
     Route::post('register', 'register')->withoutMiddleware('auth:api');
     Route::post('login', 'login')->withoutMiddleware('auth:api');
-    Route::post('logout', 'logout');
-    Route::get('user', 'user');
-    Route::post('refresh', 'refresh');
+
+    Route::middleware('auth:api')->group(function () {
+        Route::post('logout', 'logout');
+        Route::get('user', 'user');
+        Route::post('refresh', 'refresh');
+    });
 });
 
 Route::middleware(['throttle:api', 'auth:api'])->group(function () {
