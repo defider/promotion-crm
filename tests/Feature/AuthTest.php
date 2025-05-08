@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class AuthUserTest extends TestCase
+class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -63,7 +63,7 @@ class AuthUserTest extends TestCase
 
     public function test_user_cannot_login_with_invalid_email_format()
     {
-        $user = User::factory()->create([
+        User::factory()->create([
             'email' => 'user@example.com',
         ]);
 
@@ -78,21 +78,12 @@ class AuthUserTest extends TestCase
 
     public function test_user_can_logout()
     {
-        $user = User::factory()->create();
+        $auth = $this->actingAsJwtUser();
 
-        $response = $this->postJson('/api/auth/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $token = $response->json('access_token');
-
-        $response = $this->postJson('/api/auth/logout', [], [
-            'Authorization' => 'Bearer ' . $token,
-        ]);
+        $response = $this->withHeaders($auth->asHeaders())
+            ->postJson('/api/auth/logout');
 
         $response->assertStatus(200);
-
         $response->assertJson([
             'message' => 'Successfully logged out',
         ]);
@@ -107,21 +98,13 @@ class AuthUserTest extends TestCase
 
     public function test_get_user_returns_authenticated_user()
     {
-        $user = User::factory()->create();
+        $auth = $this->actingAsJwtUser();
 
-        $response = $this->postJson('/api/auth/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $token = $response->json('access_token');
-
-        $response = $this->getJson('/api/auth/user', [
-            'Authorization' => 'Bearer ' . $token,
-        ]);
+        $response = $this->withHeaders($auth->asHeaders())
+            ->getJson('/api/auth/user');
 
         $response->assertStatus(200);
-        $response->assertJsonFragment(['email' => $user->email]);
+        $response->assertJsonFragment(['email' => $auth->user->email]);
     }
 
     public function test_get_user_without_token_fails()
@@ -133,18 +116,10 @@ class AuthUserTest extends TestCase
 
     public function test_refresh_token_returns_new_token()
     {
-        $user = User::factory()->create();
+        $auth = $this->actingAsJwtUser();
 
-        $loginResponse = $this->postJson('/api/auth/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $token = $loginResponse->json('access_token');
-
-        $response = $this->postJson('/api/auth/refresh', [], [
-            'Authorization' => 'Bearer ' . $token,
-        ]);
+        $response = $this->withHeaders($auth->asHeaders())
+            ->postJson('/api/auth/refresh');
 
         $response->assertStatus(200);
         $response->assertJsonStructure(['access_token', 'token_type', 'expires_in']);
@@ -159,11 +134,8 @@ class AuthUserTest extends TestCase
 
     public function test_refresh_with_invalid_token_fails()
     {
-        $invalidToken = 'Bearer this.is.a.broken.token';
-
-        $response = $this->postJson('/api/auth/refresh', [], [
-            'Authorization' => $invalidToken
-        ]);
+        $response = $this->withJwtToken('this.is.a.broken.token')
+            ->postJson('/api/auth/refresh');
 
         $response->assertStatus(401);
     }
