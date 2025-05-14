@@ -17,10 +17,13 @@ class DistributionResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'building_id' => $this->building_id,
-            'leaflet_id' => $this->leaflet_id,
             'began_at' => $this->began_at,
             'ended_at' => $this->ended_at,
+            'duration' => $this->began_at && $this->ended_at
+                ? $this->ended_at->diff($this->began_at)->format('%H:%I:%S') : null,
+            'leaflet_id' => $this->leaflet_id,
+            'building' => new BuildingResource($this->whenLoaded('building')),
+            'apartments' => ApartmentResource::collection($this->whenLoaded('apartments')),
         ];
     }
 }

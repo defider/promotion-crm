@@ -20,16 +20,6 @@ class DistributionController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreDistributionRequest $request): JsonResponse
-    {
-        new DistributionResource(Distribution::create($request->all()));
-
-        return response()->json(['message' => 'Distribution began'], 201);
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Distribution $distribution): DistributionResource
@@ -40,11 +30,14 @@ class DistributionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDistributionRequest $request, Distribution $distribution): DistributionResource
+    public function update(UpdateDistributionRequest $request, Distribution $distribution): JsonResponse
     {
-        $distribution->update($request->all());
+        $updated = $request->applyChanges($distribution);
 
-        return new DistributionResource($distribution);
+        return response()->json([
+            'message' => 'Distribution updated',
+            'data' => new DistributionResource($updated)
+        ]);
     }
 
     /**
@@ -57,21 +50,42 @@ class DistributionController extends Controller
         return response()->json(['message' => 'Distribution has been removed']);
     }
 
-    public function end($id): JsonResponse
+    public function began(StoreDistributionRequest $request): JsonResponse
     {
-        $distribution = Distribution::findOrFail($id);
+        if (Distribution::where('user_id', $request->user()->id)->whereNull('ended_at')->exists()) {
+            return response()->json(['message' => 'Active distribution already exists'], 400);
+        }
 
+        $distribution = $request->store();
+
+        return response()->json(new DistributionResource($distribution->load('building.apartments')
+        ));
+    }
+
+    public function current(): JsonResponse
+    {
+        $distribution = Distribution::with(['building', 'apartments'])
+            ->where('user_id', auth()->id())
+            ->whereNull('ended_at')
+            ->latest()
+            ->first();
+
+        if (! $distribution) {
+            return response()->json(['message' => 'No active distribution'], 404);
+        }
+
+        return response()->json(new DistributionResource($distribution));
+    }
+
+    public function end(Distribution $distribution): JsonResponse
+    {
         if ($distribution->ended_at) {
-            return response()->json([
-                'message' => 'Distribution already ended',
-            ], 400);
+            return response()->json(['message' => 'Distribution already ended',], 400);
         }
 
         $distribution->ended_at = now();
         $distribution->save();
 
-        return response()->json([
-            'message' => 'Distribution ended',
-        ]);
+        return response()->json(['message' => 'Distribution ended']);
     }
 }

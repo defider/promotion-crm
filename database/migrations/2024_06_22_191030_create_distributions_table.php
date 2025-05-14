@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('building_id')->constrained();
             $table->foreignId('leaflet_id')->constrained();
-            $table->timestamp('began_at');
+            $table->timestamp('began_at')->nullable();
             $table->timestamp('ended_at')->nullable();
             $table->timestamps();
         });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Distribution;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDistributionRequest extends FormRequest
@@ -22,9 +23,18 @@ class StoreDistributionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'exists:users,id'],
             'building_id' => ['required', 'exists:buildings,id'],
             'leaflet_id' => ['required', 'exists:leaflets,id'],
         ];
+    }
+
+    public function store(): Distribution
+    {
+        return Distribution::create([
+            'user_id' => auth()->id(),
+            'building_id' => $this->input('building_id'),
+            'leaflet_id' => $this->input('leaflet_id'),
+            'began_at' => now(),
+        ]);
     }
 }

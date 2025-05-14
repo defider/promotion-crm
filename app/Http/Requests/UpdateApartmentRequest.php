@@ -22,9 +22,9 @@ class UpdateApartmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'building_id' => ['exists:buildings,id'],
-            'number' => ['string', 'max:255'],
-            'reaction_id' => ['exists:reactions,number'],
+            'building_id' => ['sometimes', 'exists:buildings,id'],
+            'number' => ['sometimes', 'string', 'max:255'],
+            'reaction_id' => ['sometimes', 'exists:reactions,number'],
         ];
     }
 }

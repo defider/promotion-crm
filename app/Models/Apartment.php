@@ -19,29 +19,8 @@ class Apartment extends Model
         'building_id',
         'number',
         'reaction_id',
+        'reaction_time',
     ];
-
-    /**
-     * The "booted" method of the model.
-     */
-    protected static function booted(): void
-    {
-        static::creating(function (Apartment $apartment) {
-            if ($apartment->reaction_id == null || 1) {
-                $apartment->reaction_time = null;
-            } else {
-                $apartment->reaction_time = now();
-            }
-        });
-
-        static::updating(function (Apartment $apartment) {
-            if ($apartment->reaction_id == 1) {
-                $apartment->reaction_time = null;
-            } else {
-                $apartment->reaction_time = now();
-            }
-        });
-    }
 
     public function building(): BelongsTo
     {

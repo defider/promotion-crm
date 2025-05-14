@@ -20,15 +20,30 @@ Route::prefix('auth')->middleware(['throttle:api'])->controller(AuthController::
     });
 });
 
-Route::middleware(['throttle:api', 'auth:api'])->group(function () {
+Route::middleware(['auth:api', 'throttle:api'])->group(function () {
     Route::apiResources([
         'regions' => RegionController::class,
         'buildings' => BuildingController::class,
         'reactions' => ReactionController::class,
-        'apartments' => ApartmentController::class,
         'leaflets' => LeafletController::class,
     ]);
 });
 
-Route::patch('distributions/{id}/end', [DistributionController::class, 'end'])->middleware(['throttle:api', 'auth:api'])->name('distributions.end');
-Route::apiResource('distributions', DistributionController::class)->middleware(['throttle:api', 'auth:api']);
+Route::middleware(['auth:api', 'throttle:api'])->group(function () {
+    Route::apiResource('apartments', ApartmentController::class);
+
+    Route::patch('apartments/{apartment}/react', [ApartmentController::class, 'react'])
+        ->name('apartments.react');
+});
+
+Route::middleware(['auth:api', 'throttle:api'])->group(function () {
+    Route::post('distributions/began', [DistributionController::class, 'began'])
+        ->name('distributions.began');
+    Route::get('distributions/current', [DistributionController::class, 'current'])
+        ->name('distributions.current');
+    Route::patch('distributions/{distribution}/end', [DistributionController::class, 'end'])
+        ->name('distributions.end');
+
+    Route::apiResource('distributions', DistributionController::class)
+        ->except(['store']);
+});

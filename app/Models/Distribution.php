@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Distribution extends Model
 {
@@ -19,16 +20,25 @@ class Distribution extends Model
         'user_id',
         'building_id',
         'leaflet_id',
+        'began_at',
+        'ended_at',
     ];
 
-    /**
-     * The "booted" method of the model.
-     */
-    protected static function booted(): void
+    protected $casts = [
+        'began_at' => 'datetime',
+        'ended_at' => 'datetime',
+    ];
+
+    public function apartments(): HasManyThrough
     {
-        static::creating(function (Distribution $distribution) {
-            $distribution->began_at = now();
-        });
+        return $this->hasManyThrough(
+            Apartment::class,
+            Building::class,
+            'id',
+            'building_id',
+            'building_id',
+            'id'
+        );
     }
 
     public function building(): BelongsTo
