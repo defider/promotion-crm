@@ -47,10 +47,10 @@ class DistributionController extends Controller
     {
         $distribution->delete();
 
-        return response()->json(['message' => 'Distribution has been removed']);
+        return response()->json(['message' => 'Distribution has been removed'], 204);
     }
 
-    public function began(StoreDistributionRequest $request): JsonResponse
+    public function begin(StoreDistributionRequest $request): JsonResponse
     {
         if (Distribution::where('user_id', $request->user()->id)->whereNull('ended_at')->exists()) {
             return response()->json(['message' => 'Active distribution already exists'], 400);
@@ -58,8 +58,8 @@ class DistributionController extends Controller
 
         $distribution = $request->store();
 
-        return response()->json(new DistributionResource($distribution->load('building.apartments')
-        ));
+        return response()->json([new DistributionResource($distribution->load('building.apartments')
+        )], 201);
     }
 
     public function current(): JsonResponse

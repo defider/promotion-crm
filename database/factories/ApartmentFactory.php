@@ -21,7 +21,7 @@ class ApartmentFactory extends Factory
         return [
             'building_id' => Building::all()->random()->id,
             'number' => fake()->unique()->randomNumber(2),
-            'reaction_id' => Reaction::all()->random()->number,
+            'reaction_id' => Reaction::all()->random()?->number,
             'reaction_time' => fake()->dateTimeBetween('+1 hour', '+5 hours'),
         ];
     }

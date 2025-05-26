@@ -2,6 +2,10 @@
 
 namespace Tests;
 
+use App\Models\Building;
+use App\Models\Leaflet;
+use App\Models\Reaction;
+use App\Models\Region;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Tests\Support\AuthResult;
@@ -30,5 +34,27 @@ abstract class TestCase extends BaseTestCase
             'Authorization' => 'Bearer ' . $token,
             'Accept' => 'application/json',
         ]);
+    }
+
+    protected function createTestDistributionDependencies(): array
+    {
+        $region = Region::factory()->create([
+            'title' => 'город Москва',
+        ]);
+
+        $reaction = Reaction::factory()->create([
+            'title' => 'Взяли листовку',
+        ]);
+
+        $building = Building::factory()
+            ->for($region)
+            ->hasApartments(3, ['reaction_id' => $reaction->number])
+            ->create();
+
+        $leaflet = Leaflet::factory()->create([
+            'title' => 'Бургерная',
+        ]);
+
+        return compact('region', 'reaction', 'building', 'leaflet');
     }
 }

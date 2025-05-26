@@ -37,8 +37,8 @@ Route::middleware(['auth:api', 'throttle:api'])->group(function () {
 });
 
 Route::middleware(['auth:api', 'throttle:api'])->group(function () {
-    Route::post('distributions/began', [DistributionController::class, 'began'])
-        ->name('distributions.began');
+    Route::post('distributions/begin', [DistributionController::class, 'begin'])
+        ->name('distributions.begin');
     Route::get('distributions/current', [DistributionController::class, 'current'])
         ->name('distributions.current');
     Route::patch('distributions/{distribution}/end', [DistributionController::class, 'end'])
