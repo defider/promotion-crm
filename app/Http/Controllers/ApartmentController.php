@@ -56,7 +56,7 @@ class ApartmentController extends Controller
     {
         $apartment->delete();
 
-        return response()->json(['message' => 'Apartment deleted']);
+        return response()->json(['message' => 'Apartment has been removed']);
     }
 
     public function react(UpdateApartmentRequest $request, Apartment $apartment): JsonResponse

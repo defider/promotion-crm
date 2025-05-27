@@ -15,9 +15,9 @@ class BuildingTest extends TestCase
     {
         $auth = $this->actingAsJwtUser();
 
-        $region = Region::factory()->create(['code' => '77']);
+        $region = Region::factory()->create();
 
-        Building::factory(3)->create(['region_id' => $region->code]);
+        Building::factory(3)->for($region)->create();
 
         $response = $this->withJwtToken($auth->token)
             ->getJson('/api/buildings');
@@ -28,9 +28,9 @@ class BuildingTest extends TestCase
 
     public function test_guest_cannot_view_building_list()
     {
-        $region = Region::factory()->create(['code' => '77']);
+        $region = Region::factory()->create();
 
-        Building::factory(3)->create(['region_id' => $region->code]);
+        Building::factory(3)->for($region)->create();
 
         $response = $this->getJson('/api/buildings');
         $response->assertStatus(401);
@@ -40,9 +40,9 @@ class BuildingTest extends TestCase
     {
         $auth = $this->actingAsJwtUser();
 
-        $region = Region::factory()->create(['code' => '77']);
+        $region = Region::factory()->create();
 
-        $building = Building::factory()->create(['region_id' => $region->code]);
+        $building = Building::factory()->for($region)->create();
 
         $response = $this->withJwtToken($auth->token)
             ->getJson("/api/buildings/$building->id");
@@ -65,9 +65,9 @@ class BuildingTest extends TestCase
     {
         $auth = $this->actingAsJwtUser();
 
-        $region = Region::factory()->create(['code' => '77']);
+        $region = Region::factory()->create();
 
-        $region = [
+        $building = [
             'region_id' => $region->code,
             'postcode' => '123456',
             'locality' => 'Москва',
@@ -76,24 +76,24 @@ class BuildingTest extends TestCase
         ];
 
         $response = $this->withJwtToken($auth->token)
-            ->postJson('/api/buildings', $region);
+            ->postJson('/api/buildings', $building);
 
         $response->assertStatus(201);
-        $this->assertDatabaseHas('buildings', $region);
+        $this->assertDatabaseHas('buildings', $building);
     }
 
     public function test_user_cannot_create_building_with_invalid_region()
     {
         $auth = $this->actingAsJwtUser();
 
-        $region = [
+        $building = [
             'region_id' => 404,
             'postcode' => '123456',
             'locality' => 'Москва',
         ];
 
         $response = $this->withJwtToken($auth->token)
-            ->postJson('/api/buildings', $region);
+            ->postJson('/api/buildings', $building);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['region_id']);
@@ -103,15 +103,16 @@ class BuildingTest extends TestCase
     {
         $auth = $this->actingAsJwtUser();
 
-        $region = Region::factory()->create(['code' => '77']);
-        $building = Building::factory()->create(['region_id' => $region->code]);
+        $region = Region::factory()->create();
+
+        $building = Building::factory()->for($region)->create();
 
         $response = $this->withJwtToken($auth->token)
             ->putJson("/api/buildings/$building->id", [
                 'region_id' => $region->code,
                 'postcode' => '654321',
-                'locality' => 'Санкт-Петербург',
-                'street' => 'Невский проспект',
+                'locality' => 'город Москва',
+                'street' => 'Тверская улица',
                 'number' => '10',
             ]);
 
@@ -119,7 +120,7 @@ class BuildingTest extends TestCase
         $this->assertDatabaseHas('buildings', [
             'id' => $building->id,
             'postcode' => '654321',
-            'locality' => 'Санкт-Петербург',
+            'locality' => 'город Москва',
         ]);
     }
 
@@ -127,8 +128,9 @@ class BuildingTest extends TestCase
     {
         $auth = $this->actingAsJwtUser();
 
-        $region = Region::factory()->create(['code' => '77']);
-        $building = Building::factory()->create(['region_id' => $region->code]);
+        $region = Region::factory()->create();
+
+        $building = Building::factory()->for($region)->create();
 
         $response = $this->withJwtToken($auth->token)
             ->putJson("/api/buildings/$building->id", [
@@ -145,9 +147,9 @@ class BuildingTest extends TestCase
     {
         $auth = $this->actingAsJwtUser();
 
-        $region = Region::factory()->create(['code' => '77']);
+        $region = Region::factory()->create();
 
-        $building = Building::factory()->create(['region_id' => $region->code]);
+        $building = Building::factory()->for($region)->create();
 
         $response = $this->withJwtToken($auth->token)
             ->deleteJson("/api/buildings/$building->id");

@@ -39,10 +39,12 @@ abstract class TestCase extends BaseTestCase
     protected function createTestDistributionDependencies(): array
     {
         $region = Region::factory()->create([
+            'code' => 77,
             'title' => 'город Москва',
         ]);
 
         $reaction = Reaction::factory()->create([
+            'number' => 1,
             'title' => 'Взяли листовку',
         ]);
 
